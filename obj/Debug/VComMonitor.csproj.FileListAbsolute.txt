@@ -1,0 +1,13 @@
+C:\Users\hiker\Documents\GitHub\VComMonitor\VComMonitor\VComMonitor\obj\Debug\VComMonitor.csprojResolveAssemblyReference.cache
+C:\Users\hiker\Documents\GitHub\VComMonitor\VComMonitor\VComMonitor\obj\Debug\VComMonitor.MainForm.resources
+C:\Users\hiker\Documents\GitHub\VComMonitor\VComMonitor\VComMonitor\obj\Debug\VComMonitor.Properties.Resources.resources
+C:\Users\hiker\Documents\GitHub\VComMonitor\VComMonitor\VComMonitor\obj\Debug\VComMonitor.csproj.GenerateResource.Cache
+C:\Users\hiker\Documents\GitHub\VComMonitor\VComMonitor\VComMonitor\bin\Debug\VComMonitor.exe.config
+C:\Users\hiker\Documents\GitHub\VComMonitor\VComMonitor\VComMonitor\bin\Debug\VComMonitor.exe
+C:\Users\hiker\Documents\GitHub\VComMonitor\VComMonitor\VComMonitor\bin\Debug\VComMonitor.pdb
+C:\Users\hiker\Documents\GitHub\VComMonitor\VComMonitor\VComMonitor\bin\Debug\MetroFramework.Design.dll
+C:\Users\hiker\Documents\GitHub\VComMonitor\VComMonitor\VComMonitor\bin\Debug\MetroFramework.dll
+C:\Users\hiker\Documents\GitHub\VComMonitor\VComMonitor\VComMonitor\bin\Debug\MetroFramework.Fonts.dll
+C:\Users\hiker\Documents\GitHub\VComMonitor\VComMonitor\VComMonitor\bin\Debug\WMI_Hardware.dll
+C:\Users\hiker\Documents\GitHub\VComMonitor\VComMonitor\VComMonitor\obj\Debug\VComMonitor.exe
+C:\Users\hiker\Documents\GitHub\VComMonitor\VComMonitor\VComMonitor\obj\Debug\VComMonitor.pdb
