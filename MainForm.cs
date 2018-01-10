@@ -17,6 +17,7 @@ using MetroFramework.Controls;
 using System.Runtime.InteropServices;
 using System.IO.Ports;
 using WMI_Hardware;
+using System.Management;
 
 namespace VComMonitor
 {
@@ -99,12 +100,12 @@ namespace VComMonitor
             //    this.Hide();
             //}
             //else if (this.WindowState == FormWindowState.Minimized)
-            if (this.WindowState == FormWindowState.Minimized)
-            {
+            //if (this.WindowState == FormWindowState.Minimized)
+            //{
                 this.Show();
                 this.WindowState = FormWindowState.Normal;
                 this.Activate();
-            }
+            //}
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -115,6 +116,15 @@ namespace VComMonitor
             //    this.ShowInTaskbar = false;
             //    this.Hide();
             //}
+            if (DialogResult.OK == MetroMessageBox.Show(this, "close ?", "close", MessageBoxButtons.OKCancel, 100))
+            {
+
+            }
+            else
+            {
+                e.Cancel = true;
+                this.Hide();
+            }
         }
 
 
@@ -149,6 +159,23 @@ namespace VComMonitor
             public uint dbcv_flags;
         }
 
+        struct GUID
+         {
+            public UInt64 Data1;
+            public short Data2;
+            public short Data3;
+            public UInt64 Data4;
+        }
+
+        struct DEV_BROADCAST_DEVICEINTERFACE
+        {
+            public uint dbcc_size;
+            public uint dbcc_devicetype;
+            public uint dbcc_reserved;
+            //GUID dbcc_classguid;
+            //TCHAR dbcc_name[1];
+        }
+
 
         /// <summary>
         /// 检测USB串口的拔插
@@ -172,6 +199,9 @@ namespace VComMonitor
                             //SysNotify.ShowBalloonTip(3000, "info", portName + " removed\n", ToolTipIcon.Info);
                             richTextBox1.AppendText(portName + " removed\n");
                             VComRemove(portName);
+
+                            portName = Marshal.PtrToStringUni((IntPtr)(m.LParam.ToInt32() + Marshal.SizeOf(typeof(DEV_BROADCAST_PORT)) + 10));
+                            richTextBox1.AppendText(portName);
                         }
                         break;
                     case DBT_DEVICEARRIVAL:             // USB插入获取对应串口名称
@@ -192,16 +222,83 @@ namespace VComMonitor
         private void metroButton1_Click(object sender, EventArgs e)
         {
             Connection wmiConnection = new Connection();
-
-            Win32_SerialPort aa = new Win32_SerialPort(wmiConnection);
-
-
-            foreach (string property in aa.GetPropertyValues())
+            //
+            //Win32_SerialPort aa = new Win32_SerialPort(wmiConnection);
+            //
+            //
+            //foreach (string property in aa.GetPropertyValues())
+            //{
+            //    richTextBox1.AppendText(property + "\n");
+            //}
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PnPEntity");//Win32_SerialPort
+            foreach (ManagementObject obj in searcher.Get())
             {
-                richTextBox1.AppendText(property + "\n");
+                // loop until you find the driver you're looking for (Hopefully you can distinguish this by the DeviceName, DriverName or FriendlyName)
+                //string version = obj.GetPropertyValue("DriverVersion").ToString();
+
+                string propKey = "Name";
+
+                if (null != obj)
+                {
+                    if (null != obj.Properties[propKey])
+                    {
+                        if (null != obj.Properties[propKey].Value)
+                        {
+                            string drv = obj.Properties[propKey].Value.ToString();
+                            richTextBox1.AppendText(drv + "\n");
+
+                            //if (obj.Properties[propKey].Value.ToString().Contains("COM"))
+                            //{
+                                
+                                richTextBox2.AppendText(obj.Properties[propKey].Value.ToString() + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("Description") + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("Caption") + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("ClassGuid") + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("CompatibleID") + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("ConfigManagerUserConfig") + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("CreationClassName") + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("DeviceID") + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("HardwareID") + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("InstallDate") + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("Manufacturer") + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("Name") + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("PNPClass") + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("PNPDeviceID") + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("Present") + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("Service") + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("Status") + "\n");
+                                richTextBox2.AppendText(obj.GetPropertyValue("StatusInfo") + "\n");
+
+
+                                //foreach (PropertyData property in obj.Properties)
+                                //{
+                                //    richTextBox2.AppendText("Property:" + property.Name + "\n");
+                                //    
+                                //
+                                //    foreach (QualifierData q in property.Qualifiers)
+                                //    {
+                                //        richTextBox2.AppendText("\t" + q.Name + "\n");
+                                //        richTextBox2.AppendText("\t" + q.Value.ToString() + "\n");
+                                //        //Console.WriteLine(
+                                //        //    processClass.GetPropertyQualifierValue(
+                                //        //    property.Name, q.Name));
+                                //        richTextBox2.AppendText("\t" + property.Name + "\n");
+                                //    }
+                                //
+                                //    richTextBox2.AppendText("\n");
+                                //}
+                            //}
+                        }
+                        
+                    }  
+                }  
             }
         }
 
-        
+        private void metroButton2_Click(object sender, EventArgs e)
+        {
+            this.ShowInTaskbar = false;
+            this.Hide();
+        }
     }
 }
